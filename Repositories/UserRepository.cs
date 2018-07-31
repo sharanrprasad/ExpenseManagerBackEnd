@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
 using ExpenseManagerBackEnd.Models.DbModels;
-using ExpenseManagerBackEnd.Models.ApiModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseManagerBackEnd.Repositories {

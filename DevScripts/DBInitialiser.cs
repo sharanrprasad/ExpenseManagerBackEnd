@@ -3,7 +3,9 @@ using System.Linq;
 using ExpenseManagerBackEnd.Models.DbModels;
 
 namespace ExpenseManagerBackEnd.DevScripts {
+    
     public class DBInitialiser {
+        
         public static void Initialise(ExpenseManagerContext context) {
             if (context.Users.Any()) {
                 return;
@@ -26,7 +28,7 @@ namespace ExpenseManagerBackEnd.DevScripts {
             context.SaveChanges();
 
             var expenseCategories = new ExpenseCategory[] {
-                new ExpenseCategory() {ExpenseCategoryId = 412, Name = "Food"}
+                new ExpenseCategory() {ExpenseCategoryId = "412", Name = "Food"}
             };
 
             foreach (var category in expenseCategories) {
@@ -37,8 +39,7 @@ namespace ExpenseManagerBackEnd.DevScripts {
 
             var expenses = new Expense[] {
                 new Expense() {
-                    ExpenseId = 9011,
-                    ExpenseCategoryId = 412,
+                    ExpenseCategoryId = "412",
                     ExpenseDate = DateTime.Now,
                     PaymentMethod = PaymentMethod.Cash,
                     Price = 20,

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Models.DbModels;
-using ExpenseManagerBackEnd.Models.ApiModels;
 
 namespace ExpenseManagerBackEnd.Contracts
 {

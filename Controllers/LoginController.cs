@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
 using ExpenseManagerBackEnd.Models.DbModels;
 using ExpenseManagerBackEnd.Models.ApiModels;
-using ExpenseManagerBackEnd.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseManagerBackEnd.Controllers {
-    [Route("api/login")]
-    [Produces("application/json")]
+    
+    
+    [Route("api/login"),Produces("application/json")]
     public class LoginController : ControllerBase {
         private readonly IUserRepository _userRepository;
 
@@ -16,23 +16,31 @@ namespace ExpenseManagerBackEnd.Controllers {
             _userRepository = userRepository;
         }
 
+
         [HttpPost]
         [Produces(typeof(User))]
-        public async Task<IActionResult> Post([FromBody] LoginModel loginData) {
+        public async Task<IActionResult> Login([FromBody] LoginModel loginData) {
+           
             if (loginData == null || !ModelState.IsValid) {
                 return BadRequest(new ErrorModel<Object>(ProjectCodes.Form_Generic_Error));
             }
+            Console.WriteLine("[Post] LoginController " + loginData.Email);
+            try {
+                var userData = await _userRepository.GetUser(loginData.Email);
 
-            var userData = await _userRepository.GetUser(loginData.Email);
+                if (userData == null) {
+                    return NotFound();
+                }
+                else if (userData.Password != loginData.Password) {
+                    return BadRequest(new ErrorModel<Object>(ProjectCodes.In_Correct_Password));
+                }
 
-            if (userData == null) {
-                return NotFound();
+                return Ok(new {Token = Utils.TokenUtils.GetNewUserToken(userData.Email,userData.UserId), User = userData});
             }
-            else if (userData.Password != loginData.Password) {
-                return BadRequest(new ErrorModel<Object>(ProjectCodes.In_Correct_Password));
+            catch (Exception e) {
+                
+                return BadRequest();
             }
-
-            return Ok(new {Token = "Token here", User = userData});
         }
     }
 }

@@ -1,8 +1,9 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ExpenseManagerBackEnd.Models.ApiModels {
     
+    [NotMapped]
     public class ErrorModel<T> {
         
         public int ErrorCode{ get; set; }

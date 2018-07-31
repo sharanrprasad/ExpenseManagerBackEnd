@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
 using ExpenseManagerBackEnd.Models.ApiModels;
 using ExpenseManagerBackEnd.Models.DbModels;
 using ExpenseManagerBackEnd.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseManagerBackEnd.Controllers {
+    
     [Route("/api/signup")]
     [Produces("application/json")]
     public class SignUpController : ControllerBase {

@@ -1,17 +1,11 @@
 ﻿using System;
 using ExpenseManagerBackEnd.Models.DbModels;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using ExpenseManagerBackEnd.Contracts;
 using ExpenseManagerBackEnd.Extensions;
 using ExpenseManagerBackEnd.Repositories;

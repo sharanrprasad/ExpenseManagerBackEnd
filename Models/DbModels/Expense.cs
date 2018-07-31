@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 
 namespace ExpenseManagerBackEnd.Models.DbModels
 {
@@ -24,7 +23,7 @@ namespace ExpenseManagerBackEnd.Models.DbModels
         
         public string UserId { get; set; }
         
-        public int ExpenseCategoryId { get; set; }
+        public string ExpenseCategoryId { get; set; }
         
         public PaymentMethod PaymentMethod { get; set; }     
         
