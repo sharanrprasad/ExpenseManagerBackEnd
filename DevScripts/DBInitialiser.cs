@@ -40,7 +40,7 @@ namespace ExpenseManagerBackEnd.DevScripts {
             var expenses = new Expense[] {
                 new Expense() {
                     ExpenseCategoryId = "412",
-                    ExpenseDate = DateTime.Now,
+                    ExpenseDate = DateTime.UtcNow,
                     PaymentMethod = PaymentMethod.Cash,
                     Price = 20,
                     UserId = "123456"
@@ -49,6 +49,20 @@ namespace ExpenseManagerBackEnd.DevScripts {
 
             foreach (var expense in expenses) {
                 context.Expenses.Add(expense);
+            }
+
+
+            var budgets = new Budget[] {
+                new Budget() {
+                    Money = 1000,
+                    FromDate = DateTime.UtcNow,
+                    ToDate = DateTime.UtcNow.AddDays(10),
+                    UserId = "123456"
+                },
+            };
+            
+            foreach (var budget in budgets) {
+                context.Budgets.Add(budget);
             }
 
             context.SaveChanges();

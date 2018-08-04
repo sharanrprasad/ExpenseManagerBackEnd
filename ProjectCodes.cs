@@ -13,6 +13,8 @@
 
         public const int User_Not_Found = 78;
 
+        public const int Budget_Already_Present = 79;
+
 
 
     }

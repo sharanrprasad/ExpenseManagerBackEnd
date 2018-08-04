@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
 using ExpenseManagerBackEnd.Models.ApiModels;
 using ExpenseManagerBackEnd.Models.DbModels;
+using ExpenseManagerBackEnd.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -39,6 +40,7 @@ namespace ExpenseManagerBackEnd.Controllers {
                     return BadRequest(new ErrorModel<Object>(ProjectCodes.User_Not_Found));
                 }
 
+                expense = TimeUtils.GetExpenseUtc(expense);
                 await  _expenseRepository.AddExpense(expense);
                 return Ok(expense);
             }
@@ -85,8 +87,10 @@ namespace ExpenseManagerBackEnd.Controllers {
                 List<Expense> expenses;
                 
                 if (!string.IsNullOrEmpty(start_date) && !string.IsNullOrEmpty(end_date)) {
-                    var startDate = DateTime.Parse(start_date);
-                    var endDate = DateTime.Parse(end_date);
+                    
+                    var startDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(start_date));
+                    var endDate =  TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(end_date));
+                    
                     expenses  = await _expenseRepository.GetAllExpenses(userId, startDate, endDate);
                 }
                 else {
