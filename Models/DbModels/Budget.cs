@@ -19,7 +19,7 @@ namespace ExpenseManagerBackEnd.Models.DbModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM--dd}",ApplyFormatInEditMode = true)]
         public DateTime ToDate { get; set; }
         
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         
         public User User { get; set; }
         

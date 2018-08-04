@@ -7,6 +7,9 @@ namespace ExpenseManagerBackEnd.Contracts
     {
         Task<User> GetUser(string email);
         Task<User> CreateUser(User user);
+        Task<bool> Exists(string userId);
+        Task<User> GetUserById(string userId);
+
 
     }
 }

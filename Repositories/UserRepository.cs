@@ -24,6 +24,16 @@ namespace ExpenseManagerBackEnd.Repositories {
             return user;
         }
 
+        public async  Task<bool> Exists(string userId) {
+             return await _context.Users.AnyAsync(user => user.UserId == userId);
+
+        }
+
+        public async  Task<User> GetUserById(string userId) {
+           
+            return await _context.Users.SingleOrDefaultAsync(user => user.UserId == userId);
+        }
+
 
     }
 }

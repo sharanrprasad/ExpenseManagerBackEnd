@@ -11,6 +11,8 @@
         
         public const int User_Already_Present = 77;
 
+        public const int User_Not_Found = 78;
+
 
 
     }

@@ -27,6 +27,8 @@ namespace ExpenseManagerBackEnd
         {
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IBudgetRepository, BudgetRepository>();
             
             services.RegisterJwtAuthentication();
             services.AddDbContext<ExpenseManagerContext>(options =>
