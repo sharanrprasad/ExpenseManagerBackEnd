@@ -23,7 +23,7 @@ namespace ExpenseManagerBackEnd.Models.DbModels
         
         public string UserId { get; set; }
         
-        public string ExpenseCategoryId { get; set; }
+        public int ExpenseCategoryId { get; set; }
         
         public PaymentMethod PaymentMethod { get; set; }     
         

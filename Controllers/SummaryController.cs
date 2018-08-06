@@ -1,15 +1,18 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
 using ExpenseManagerBackEnd.Models.ApiModels;
+using ExpenseManagerBackEnd.Models.DbModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ExpenseManagerBackEnd.Controllers {
-    
+
     [Route("/api/summary")]
     [Produces("application/json")]
-    public class SummaryController:ControllerBase {
+    public class SummaryController : ControllerBase {
 
         private readonly IExpenseRepository _expenseRepository;
         private readonly IBudgetRepository _budgetRepository;
@@ -20,34 +23,61 @@ namespace ExpenseManagerBackEnd.Controllers {
             _budgetRepository = _budgetRepository;
         }
 
-        [HttpPost("/bydate")]
-        public async Task<IActionResult> GetSummary([FromBody]GetSummaryModel data) {
+        [HttpPost("/api/summary/bydate")]
+        public async Task<IActionResult> GetSummary([FromBody] GetSummaryModel data) {
             if (data == null || !ModelState.IsValid) {
-                return BadRequest(new ErrorModel<object>(ProjectCodes.Form_Generic_Error)); 
+                return BadRequest(new ErrorModel<object>(ProjectCodes.Form_Generic_Error));
             }
 
             try {
                 data.FromDate = TimeZoneInfo.ConvertTimeToUtc(data.FromDate);
                 data.ToDate = TimeZoneInfo.ConvertTimeToUtc(data.ToDate);
+
+                var summaryModel = new SummaryModel() {
+                    TotalExpenditure = 0,
+                    ExpenditureCategoryMap = new Dictionary<string, SpendingCategoryModel>()
+                };
+
                 var expenses = await _expenseRepository.GetAllExpenses(data.UserId, data.FromDate, data.ToDate);
 
-                var totalExpenditure = 0.0f;
+                expenses.ForEach(exp => {
+                    int categoryId;
+                    ExpenseCategory category = null;
+                    if (exp.ExpenseCategory.ParentId != null) {
+                        categoryId = exp.ExpenseCategory.ParentId.Value;
+                        category = exp.ExpenseCategory.ExpenseCategoryParent;
+                    }
+                    else {
+                        categoryId = exp.ExpenseCategory.ExpenseCategoryId;
+                        category = exp.ExpenseCategory;
+                    }
 
-                expenses.ForEach(exp => { });
+                    if (summaryModel.ExpenditureCategoryMap.ContainsKey(categoryId.ToString())) {
+                        summaryModel.ExpenditureCategoryMap[categoryId.ToString()].CategoryExpenditure += exp.Price;
+                    }
+                    else {
+                        summaryModel.ExpenditureCategoryMap.Add(categoryId.ToString(), new SpendingCategoryModel() {
+                            CategoryExpenditure = exp.Price,
+                            ExpenseCategory = new ExpenseCategory() {
+                                ExpenseCategoryId = category.ExpenseCategoryId,
+                                Name = category.Name,
+                                ParentId = category.ParentId,
+                                ChildCategories = null,
+                                UserId = category.UserId
+                            }
+                        });
+                    }
 
-                return Ok(new SummaryModel() {
-                    Expenses = expenses
+                    summaryModel.TotalExpenditure += exp.Price;
                 });
 
+                return Ok(summaryModel);
             }
             catch (Exception e) {
                 return BadRequest(new ErrorModel<object>(ProjectCodes.Generic_Error));
             }
-            
         }
-        
-        
-        
-        
+
+
     }
 }

@@ -28,7 +28,9 @@ namespace ExpenseManagerBackEnd.DevScripts {
             context.SaveChanges();
 
             var expenseCategories = new ExpenseCategory[] {
-                new ExpenseCategory() {ExpenseCategoryId = "412", Name = "Food"}
+                new ExpenseCategory() {Name = "Food"},
+                new ExpenseCategory(){ Name = "Restraunts",ParentId = 1},
+                new ExpenseCategory(){Name = "Subway", ParentId = 1}
             };
 
             foreach (var category in expenseCategories) {
@@ -39,7 +41,7 @@ namespace ExpenseManagerBackEnd.DevScripts {
 
             var expenses = new Expense[] {
                 new Expense() {
-                    ExpenseCategoryId = "412",
+                    ExpenseCategoryId = 1,
                     ExpenseDate = DateTime.UtcNow,
                     PaymentMethod = PaymentMethod.Cash,
                     Price = 20,

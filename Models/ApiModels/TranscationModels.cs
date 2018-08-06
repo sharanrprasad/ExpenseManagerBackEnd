@@ -22,10 +22,17 @@ namespace ExpenseManagerBackEnd.Models.ApiModels {
     }
 
     [NotMapped]
+    [Serializable]
     public class SummaryModel {
-        public float TotalExpenditure{ get; set; }
+        public decimal TotalExpenditure{ get; set; }
         public ExpenseCategory MostSpentCategory{ get; set; }
-        public List<Expense> Expenses{ get; set; }
+        public Dictionary<string,SpendingCategoryModel> ExpenditureCategoryMap{ get; set; }
         
+    }
+
+    [NotMapped]
+    public class SpendingCategoryModel {
+        public decimal CategoryExpenditure{ get; set; }
+        public ExpenseCategory ExpenseCategory{ get; set; }
     }
 }

@@ -29,11 +29,16 @@ namespace ExpenseManagerBackEnd
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<IBudgetRepository, BudgetRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             
             services.RegisterJwtAuthentication();
             services.AddDbContext<ExpenseManagerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+            
+            
             
         }
 
@@ -52,7 +57,10 @@ namespace ExpenseManagerBackEnd
             app.UseHttpsRedirection();
             app.Use(async (context, next) =>
             {
-                Console.WriteLine("In Middle Ware");
+                if (context.Request.Headers.ContainsKey("Authorization")) {
+                    Console.WriteLine("[TestMiddleware]  Auth Token - " + context.Request.Headers["Authorization"]);
+                }
+
                 await next.Invoke();
             });
             app.UseAuthentication();
