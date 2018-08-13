@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
-using ExpenseManagerBackEnd.Models.ApiModels;
+using ExpenseManagerBackEnd.Models.DtoModels;
 using ExpenseManagerBackEnd.Models.DbModels;
 using ExpenseManagerBackEnd.Utils;
 using Microsoft.AspNetCore.Mvc;

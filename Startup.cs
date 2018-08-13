@@ -37,9 +37,9 @@ namespace ExpenseManagerBackEnd
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-            
-            
-            
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,14 +53,15 @@ namespace ExpenseManagerBackEnd
             {
                 app.UseHsts();
             }
-
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.Use(async (context, next) =>
             {
                 if (context.Request.Headers.ContainsKey("Authorization")) {
                     Console.WriteLine("[TestMiddleware]  Auth Token - " + context.Request.Headers["Authorization"]);
                 }
-
+               
+                Console.WriteLine(context.Request.Body);
                 await next.Invoke();
             });
             app.UseAuthentication();

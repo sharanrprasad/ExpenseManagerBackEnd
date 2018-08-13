@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
-using ExpenseManagerBackEnd.Models.ApiModels;
+using ExpenseManagerBackEnd.Models.DtoModels;
 using ExpenseManagerBackEnd.Models.DbModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace ExpenseManagerBackEnd.Controllers {
 
-    [Route("/api/summary")]
+    [Route("api/summary")]
     [Produces("application/json")]
     public class SummaryController : ControllerBase {
 
@@ -23,7 +23,7 @@ namespace ExpenseManagerBackEnd.Controllers {
             _budgetRepository = _budgetRepository;
         }
 
-        [HttpPost("/api/summary/bydate")]
+        [HttpPost("bydate")]
         public async Task<IActionResult> GetSummary([FromBody] GetSummaryModel data) {
             if (data == null || !ModelState.IsValid) {
                 return BadRequest(new ErrorModel<object>(ProjectCodes.Form_Generic_Error));

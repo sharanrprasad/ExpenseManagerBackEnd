@@ -2,7 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
-using ExpenseManagerBackEnd.Models.ApiModels;
+using ExpenseManagerBackEnd.Models.DtoModels;
 using ExpenseManagerBackEnd.Models.DbModels;
 using ExpenseManagerBackEnd.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +21,7 @@ namespace ExpenseManagerBackEnd.Controllers {
             _budgetRepository = budgetRepository;
         }
 
-        [HttpPost("/add")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddBudget([FromBody] Budget budget) {
             if (budget == null || !ModelState.IsValid) {
                 return BadRequest(new ErrorModel<object>(ProjectCodes.Form_Generic_Error));
@@ -43,7 +43,7 @@ namespace ExpenseManagerBackEnd.Controllers {
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteBudget([FromRoute] int id) {
             if (!await _budgetRepository.Exists(id)) {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace ExpenseManagerBackEnd.Controllers {
             }
         }
 
-        [HttpPost("/update")]
+        [HttpPost("update")]
         public async Task<IActionResult> UpdateBudget([FromBody] Budget budget) {
             if (!ModelState.IsValid || budget == null) {
                 return BadRequest(new ErrorModel<object>(ProjectCodes.Form_Generic_Error));
@@ -77,7 +77,7 @@ namespace ExpenseManagerBackEnd.Controllers {
         }
 
 
-        [HttpGet("/current/{id}")]
+        [HttpGet("current/{userid}")]
         public async Task<IActionResult> GetCurrentBudget([FromRoute] string userid) {
             if (!await _userRepository.Exists(userid)) {
                 return BadRequest(new ErrorModel<object>(ProjectCodes.User_Not_Found));

@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExpenseManagerBackEnd.Models.ApiModels {
+namespace ExpenseManagerBackEnd.Models.DtoModels {
     
     [NotMapped]
     public class ErrorModel<T> {

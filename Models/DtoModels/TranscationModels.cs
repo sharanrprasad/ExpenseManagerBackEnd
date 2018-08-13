@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using ExpenseManagerBackEnd.Models.DbModels;
 using Microsoft.AspNetCore.Routing.Constraints;
 
-namespace ExpenseManagerBackEnd.Models.ApiModels {
+namespace ExpenseManagerBackEnd.Models.DtoModels {
     
     [NotMapped]
     public class LoginModel {

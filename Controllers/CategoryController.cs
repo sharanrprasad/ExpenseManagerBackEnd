@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
-using ExpenseManagerBackEnd.Models.ApiModels;
+using ExpenseManagerBackEnd.Models.DtoModels;
 using ExpenseManagerBackEnd.Models.DbModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,12 +34,8 @@ namespace ExpenseManagerBackEnd.Controllers {
                 else {
                     expenseCategories = await _categoryRepository.GetCategoriesByUser(userid);
                 }
-
-                string jsonData = JsonConvert.SerializeObject(expenseCategories, new JsonSerializerSettings() {
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                });
-                
-                return Ok(jsonData);
+                Console.WriteLine("Categories List === " + expenseCategories);
+                return Ok(expenseCategories);
             }
             catch (Exception e) {
                 Console.WriteLine(e.ToString());

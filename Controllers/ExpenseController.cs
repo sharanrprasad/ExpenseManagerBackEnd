@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.Contracts;
-using ExpenseManagerBackEnd.Models.ApiModels;
+using ExpenseManagerBackEnd.Models.DtoModels;
 using ExpenseManagerBackEnd.Models.DbModels;
 using ExpenseManagerBackEnd.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +25,11 @@ namespace ExpenseManagerBackEnd.Controllers {
             _userRepository = userRepository;
         }
 
-        [HttpPost("/add")]
+        [HttpPost("add")]
         [Produces(typeof(Expense))]
         public async  Task<IActionResult> AddExpense([FromBody] Expense expense) {
+            
+            Console.WriteLine("[Add Expense] " + expense);
 
             if (expense == null || !ModelState.IsValid) {
                 return BadRequest(new ErrorModel<Object>(ProjectCodes.Form_Generic_Error));
@@ -76,11 +78,13 @@ namespace ExpenseManagerBackEnd.Controllers {
         }
 
 
-        [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetExpense([FromRoute] string userId, [FromHeader]string start_date, string end_date) {
+        [HttpGet("user/{userid}")]
+        public async Task<IActionResult> GetExpense([FromRoute] string userid, [FromHeader]string start_date, [FromHeader] string end_date) {
            
-            if (!await _userRepository.Exists(userId)) {
-                return BadRequest(new ErrorModel<Object>(ProjectCodes.User_Not_Found));
+            var isUserPresent = await _userRepository.Exists(userid);
+            
+            if (!isUserPresent) {
+                return BadRequest(new ErrorModel<object>(ProjectCodes.User_Not_Found));
             }
             try {
 
@@ -91,10 +95,10 @@ namespace ExpenseManagerBackEnd.Controllers {
                     var startDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(start_date));
                     var endDate =  TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(end_date));
                     
-                    expenses  = await _expenseRepository.GetAllExpenses(userId, startDate, endDate);
+                    expenses  = await _expenseRepository.GetAllExpenses(userid, startDate, endDate);
                 }
                 else {
-                    expenses = await _expenseRepository.GetAllExpenses(userId);
+                    expenses = await _expenseRepository.GetAllExpenses(userid);
                 }
 
                 return Ok(expenses);
@@ -102,7 +106,7 @@ namespace ExpenseManagerBackEnd.Controllers {
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                throw;
+                return BadRequest(new ErrorModel<Object>(ProjectCodes.Generic_Error));
             }
             
             
