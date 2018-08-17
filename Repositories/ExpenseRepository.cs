@@ -50,6 +50,14 @@ namespace ExpenseManagerBackEnd.Repositories {
             return expenses;
         }
 
+        public async Task<List<Expense>> GetLatestExpense(string userId) {
+            var expenses = await _context.Expenses.Where(e => e.UserId == userId).OrderByDescending(e => e.ExpenseDate)
+                .Take(10).ToListAsync();
+
+            return expenses;
+        }
+
+
 
     }
 }

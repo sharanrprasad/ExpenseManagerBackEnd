@@ -28,5 +28,12 @@ namespace ExpenseManagerBackEnd.Repositories {
                 .Include(ec => ec.ChildCategories).ToListAsync();
             return expenseCategoryList;
         }
+
+        public async Task<ExpenseCategory> AddParentCategory(ExpenseCategory expenseCategory) {
+            await _context.ExpenseCategories.AddAsync(expenseCategory);
+            await _context.SaveChangesAsync();
+            return expenseCategory;
+        }
+
     }
 }

@@ -11,5 +11,6 @@ namespace ExpenseManagerBackEnd.Contracts {
         Task<List<Expense>> GetAllExpenses(string userId);
         Task<List<Expense>> GetAllExpenses(string userId, DateTime starTime, DateTime endTime);
         Task<Expense> GetExpense(int expenseId);
+        Task<List<Expense>> GetLatestExpense(string userId);
     }
 }

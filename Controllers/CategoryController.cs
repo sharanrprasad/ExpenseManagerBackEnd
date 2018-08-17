@@ -44,6 +44,19 @@ namespace ExpenseManagerBackEnd.Controllers {
 
 
         }
+
+        [HttpPost("add-parent")]
+        public async Task<IActionResult> AddNewParentCategory([FromBody] ExpenseCategory expenseCategory) {
+            try {
+                var expense = await  _categoryRepository.AddParentCategory(expenseCategory);
+                return Ok(expense);
+
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.ToString());
+                return BadRequest(new ErrorModel<object>(ProjectCodes.Generic_Error));
+            }
+        }
         
         
         
