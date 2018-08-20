@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using ExpenseManagerBackEnd.DevScripts;
 using ExpenseManagerBackEnd.Models.DbModels;
@@ -15,9 +16,8 @@ namespace ExpenseManagerBackEnd
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            //CreateWebHostBuilder(args).Build().Run();
+        public static void Main(string[] args) {
+           
             var host = CreateWebHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
@@ -41,6 +41,6 @@ namespace ExpenseManagerBackEnd
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>().UseUrls("https://127.0.0.1:5001").PreferHostingUrls(false);
     }
 }

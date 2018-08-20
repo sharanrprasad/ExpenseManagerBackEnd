@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using ExpenseManagerBackEnd.Models.DbModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,14 +38,15 @@ namespace ExpenseManagerBackEnd
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-
-
+           
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,12 +57,12 @@ namespace ExpenseManagerBackEnd
             }
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
+            
             app.Use(async (context, next) =>
             {
                 if (context.Request.Headers.ContainsKey("Authorization")) {
                     Console.WriteLine("[TestMiddleware]  Auth Token - " + context.Request.Headers["Authorization"]);
                 }
-               
                 Console.WriteLine(context.Request.Body);
                 await next.Invoke();
             });

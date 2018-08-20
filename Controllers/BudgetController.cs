@@ -85,7 +85,12 @@ namespace ExpenseManagerBackEnd.Controllers {
 
             try {
                 var currentBudget = await _budgetRepository.GetCurrentBudget(userid);
-                return Ok(currentBudget);
+                if (currentBudget != null) {
+                    return Ok(currentBudget);
+                }
+                else {
+                    return NotFound();
+                }
             }
             catch (Exception e) {
                 Console.WriteLine(e);
