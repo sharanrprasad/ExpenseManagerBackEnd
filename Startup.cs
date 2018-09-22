@@ -45,8 +45,7 @@ namespace ExpenseManagerBackEnd
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            ServicePointManager.SecurityProtocol =
-                SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,6 +55,19 @@ namespace ExpenseManagerBackEnd
                 app.UseHsts();
             }
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+
+            if(env.IsProduction()){
+                // When using a reverse proxy it handles all the Https conncetions and sends the Http requests to server.
+                //When using reverse proxy use this to make sure that asp.net core understands that http request is coming from the reverse proxy.
+
+                app.UseForwardedHeaders(new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor
+                });
+
+            }
+
             app.UseHttpsRedirection();
             
             app.Use(async (context, next) =>

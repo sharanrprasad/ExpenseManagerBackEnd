@@ -16,8 +16,9 @@ namespace ExpenseManagerBackEnd
 {
     public class Program
     {
-        public static void Main(string[] args) {
-           
+        public static void Main(string[] args)
+        {
+
             var host = CreateWebHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
             {
@@ -31,16 +32,29 @@ namespace ExpenseManagerBackEnd
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("An Error Occured while seeding the database"+ e.ToString());
-                   
+                    Console.WriteLine("An Error Occured while seeding the database" + e.ToString());
+
                 }
             }
-            
+
             host.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+
+            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().UseKestrel(options =>
+            {
+//                options.Listen(IPAddress.Loopback, 5000, listenOptions =>
+//                {
+//                    listenOptions.UseHttps("testCertificate.pfx", "test123");
+//                });
+
+                //remove this
+                options.Listen(IPAddress.Loopback, 5001);
+                options.Listen(IPAddress.Loopback,5000);
+            });
+
+        }
     }
 }
